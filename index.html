@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en" class="sm:scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" defer src="main.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "black-light": "#1a1a1a",
+              "black-dark": "#0d0d0d",
+            },
+            animation: {
+              "open-menu": "openMenu 0.3s ease-out forwards",
+            },
+            keyframes: {
+              openMenu: {
+                "0%": { transform: "scaleY(0)" },
+                "100%": { transform: "scaleY(1)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out;
+      }
+      .hide-navbar {
+        transform: translateY(-100%);
+        transition: transform 0.3s ease-in-out;
+      }
+      .show-navbar {
+        transform: translateY(0);
+        transition: transform 0.3s ease-in-out;
+      }
+    </style>
+    <title>Marbella Royce</title>
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <!-- Sticky Discount Button -->
+    <button onclick="openModal()" class="fixed right-0 top-1/2 transform -translate-y-1/2 rotate-[-90deg] origin-bottom-right bg-gradient-to-r from-blue-500 to-indigo-600 text-white text-sm px-4 py-2 rounded-full shadow-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 z-50">
+      Unlock Discounted Price List
+    </button>
+
+    <!-- Modal -->
+    <div id="leadModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+      <div class="bg-white rounded-2xl shadow-2xl p-6 w-[90%] max-w-md relative animate-fadeIn border border-blue-100">
+        <button onclick="closeModal()" class="absolute top-2 right-3 text-gray-500 hover:text-black text-2xl">&times;</button>
+        <h2 class="text-2xl font-extrabold mb-2 text-center text-blue-700">Grab Discounted Price List</h2>
+        <p class="text-sm text-gray-600 text-center mb-4">
+          Fill in your details to get <span class="font-medium text-blue-600">exclusive pricing</span> and access to <span class="italic">unlisted units</span>.
+        </p>
+        <form action="https://formsubmit.co/shaurya.rawat36@gmail.com" method="POST" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Your Name <span class="text-red-500">*</span></label>
+            <input type="text" name="name" required placeholder="John Doe" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Phone Number <span class="text-red-500">*</span></label>
+            <input type="tel" name="phone" required placeholder="9876543210" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Email (optional)</label>
+            <input type="email" name="email" placeholder="you@example.com" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400" />
+          </div>
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_autoresponse" value="Thanks for your interest. We'll reach out shortly with your exclusive price list and availability.">
+          <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition duration-300">
+            Get My Discounted Price List
+          </button>
+        </form>
+      </div>
+    </div>
+
+  <!-- Navbar -->
+<header id="navbar" class="sticky top-0 z-50 bg-black-light text-white">
+  <section class="mx-auto flex max-w-6xl items-center justify-between p-4">
+    
+    <!-- Logo (clickable) -->
+<a href="/" class="flex items-center space-x-2">
+  <img 
+    src="./flogo.png" 
+    alt="Logo"
+    class="h-24 sm:h-20 md:h-16 lg:h-14 w-auto"
+  >
+
+      <span class="text-lg sm:text-xl font-semibold">Marbella Royce</span>
+</a>
+    <!-- Hamburger Button (Mobile) -->
+    <div class="md:hidden">
+      <button id="hamburger-button" class="relative w-8 h-8">
+        <div class="absolute top-4 left-0 h-1 w-8 bg-white rounded transition-all duration-300 
+                    before:content-[''] before:absolute before:top-[-12px] before:left-0 before:h-1 before:w-8 before:bg-white before:rounded 
+                    after:content-[''] after:absolute after:top-[12px] after:left-0 after:h-1 after:w-8 after:bg-white after:rounded">
+        </div>
+      </button>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden space-x-6 text-md md:flex" aria-label="main">
+      <a href="#hero" class="hover:opacity-90">Home</a>
+      <a href="#service" class="hover:opacity-90">Services</a>
+      <a href="#team" class="hover:opacity-90">Find a Team</a>
+      <a href="#news" class="hover:opacity-90">News</a>
+      <a href="#footer" class="hover:opacity-90">Contact Us</a>
+    </nav>
+  </section>
+
+  <!-- Mobile Navigation -->
+  <section id="mobile-menu" class="hidden origin-top animate-open-menu flex-col bg-black-dark text-3xl md:hidden">
+    <nav class="flex min-h-screen flex-col items-center justify-center py-8 space-y-8" aria-label="mobile">
+      <a href="#hero" class="hover:opacity-90">Home</a>
+      <a href="#service" class="hover:opacity-90">Services</a>
+      <a href="#team" class="hover:opacity-90">Find a Team</a>
+      <a href="#news" class="hover:opacity-90">News</a>
+      <a href="#footer" class="hover:opacity-90">Contact Us</a>
+    </nav>
+  </section>
+</header>
+
+    <!-- Scroll Navbar Logic -->
+    <script>
+      let prevScroll = window.scrollY;
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.scrollY;
+        if (currentScroll > prevScroll && currentScroll > 60) {
+          navbar.classList.remove('show-navbar');
+          navbar.classList.add('hide-navbar');
+        } else {
+          navbar.classList.remove('hide-navbar');
+          navbar.classList.add('show-navbar');
+        }
+        prevScroll = currentScroll;
+      });
+    </script>
+
+  <!-- Hero Section -->
+<main>
+  <!-- Fullscreen Background Swiper with no text -->
+  <section id="hero" class="relative h-screen w-full">
+    <!-- Background Swiper -->
+    <div class="swiper h-full w-full">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide bg-cover bg-center" style="background-image: url('./images/ununun.png')"></div>
+        <div class="swiper-slide bg-cover bg-center" style="background-image: url('./s.png')"></div>
+        <div class="swiper-slide bg-cover bg-center" style="background-image: url('./s.png')"></div>
+      </div>
+    </div>
+
+    <!-- Optional Overlay -->
+    <div class="absolute inset-0 bg-gray-500/40 z-10"></div>
+  </section>
+
+<!-- Content Section Below the Hero -->
+<section class="bg-gray-50 text-gray-800 py-20 px-6 sm:px-8 lg:px-12 relative overflow-hidden">
+  <!-- Frosted Glass Background Blur -->
+  <div class="absolute inset-0 bg-white/60 backdrop-blur-md -z-10"></div>
+
+  <div class="max-w-[1200px] mx-auto flex flex-col space-y-8 sm:space-y-10">
+    
+    <!-- Headline -->
+    <h1 class="text-5xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-gray-900">
+      Marbella Royce, Mohali
+    </h1>
+
+    <!-- Subheadline -->
+    <h2 class="text-2xl sm:text-3xl lg:text-5xl font-bold text-[#00ADEF]">
+      Region’s First Tallest Residential Skyscraper
+    </h2>
+
+    <!-- Description -->
+    <p class="max-w-2xl text-lg sm:text-xl text-gray-700 font-medium">
+      Welcome to Marbella Royce, located in Sector 83A, IT City, Mohali. Luxury living, panoramic views, and a prestigious address await you.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4">
+      <a href="tel:+917009869291"
+         class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-lg shadow-blue-200/50 font-semibold text-lg transition-all duration-300">
+         📞 Call: 7009869291
+      </a>
+      <a href="https://wa.me/917009869291?text=Hi%2C%20I'm%20interested%20in%20Marbella%20Royce%20project"
+         target="_blank"
+         class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow-lg shadow-green-200/50 font-semibold text-lg transition-all duration-300">
+         💬 WhatsApp Us
+      </a>
+    </div>
+
+    <!-- Info Stats -->
+    <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-6 w-full text-center">
+      <!-- Card -->
+      <div class="bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+        <h3 class="text-3xl font-bold text-gray-900">623</h3>
+        <p class="mt-2 text-sm font-medium text-gray-600">Lavish & Loaded Units</p>
+      </div>
+      <div class="bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+        <h3 class="text-2xl font-bold text-gray-900">8.01 Acres</h3>
+        <p class="mt-2 text-sm font-medium text-gray-600">GAMADA Allotted Land</p>
+      </div>
+      <div class="bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+        <h3 class="text-2xl font-bold text-gray-900">4 & 5 BHK</h3>
+        <p class="mt-2 text-sm font-medium text-gray-600">Luxury Apartments</p>
+      </div>
+      <div class="bg-white/80 backdrop-blur-xl border border-gray-200 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300">
+        <h3 class="text-2xl font-bold text-gray-900">25 Years</h3>
+        <p class="mt-2 text-sm font-medium text-gray-600">Legacy of Trust</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+      <!------------------------- Services Section --------------------->
+      <section id="service" class="px-6 py-12 max-w-[1200px] mx-auto">
+  <!-- Header -->
+  <div class="flex flex-col text-center md:flex-row md:justify-between md:items-end mb-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 md:mb-0">
+      Luxury Like No Other
+    </h2>
+    <p class="text-base text-gray-600 md:max-w-[450px] lg:max-w-[560px] leading-relaxed">
+      Discover an extraordinary lifestyle in the prestigious Marbella Royce — a 42-story architectural masterpiece nestled in the heart of a pristine community, where luxury meets elevation.
+    </p>
+  </div>
+
+  <!-- Services Cards -->
+  <div class="flex gap-6 overflow-x-auto md:overflow-visible md:flex-wrap justify-center">
+    
+    <!-- Card 1 -->
+    <div class="flex flex-col gap-4 min-w-[260px] md:w-[30%] bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img
+        class="w-full h-56 object-cover rounded-md"
+        src="./images/bedroom.avif"
+        alt="Luxurious Interior"
+      />
+      <h3 class="text-xl font-semibold text-gray-900">
+        Luxurious Interior
+      </h3>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Designed by renowned Italian interior designers, each apartment features exquisite materials and exceptional finishes for unmatched comfort and style.
+      </p>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="flex flex-col gap-4 min-w-[260px] md:w-[30%] bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img
+        class="w-full h-56 object-cover rounded-md"
+        src="./images/nightexterior.jpg"
+        alt="Tallest Residential Project"
+      />
+      <h3 class="text-xl font-semibold text-gray-900">
+        Towering Heights
+      </h3>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Enjoy unparalleled views from the tallest residential tower in the region — where every sunrise and sunset becomes a luxury experience.
+      </p>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="flex flex-col gap-4 min-w-[260px] md:w-[30%] bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img
+        class="w-full h-56 object-cover rounded-md"
+        src="./images/pool.webp"
+        alt="Prime Location"
+      />
+      <h3 class="text-xl font-semibold text-gray-900">
+        Prime Location
+      </h3>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Strategically situated in Sector 83A, Mohali — adjoining IT City, Punjab — experience the convenience of modern living with exceptional connectivity.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+      
+      <!------------------------- Features Section ----------------------->
+      <section class="px-6 py-12 max-w-[1200px] mx-auto">
+  <!-- Section Header -->
+  <div class="flex flex-col gap-4 mb-12">
+    <div class="h-1 w-[90px] bg-gradient-to-r from-blue-500 to-indigo-600 rounded"></div>
+    <div class="flex flex-col gap-4 md:flex-row md:justify-between md:items-end">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+        What Makes Us <br />
+        Different?
+      </h2>
+      <p class="text-base text-gray-600 md:max-w-[560px] leading-relaxed">
+        Marbella Royce is not just a residential marvel — it's an investment magnet. With its prime Tricity location and iconic height, it's the most awaited project in a decade, attracting elite residents and investors alike.
+      </p>
+    </div>
+  </div>
+
+  <!-- Feature Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    
+    <!-- Card 1 -->
+    <div class="flex flex-col items-center bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img src="feature1.png" alt="Italian Interiors" class="w-20 h-20 mb-4" />
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Italian-Inspired Interiors</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Interiors crafted by top Italian designers using premium materials for timeless elegance and comfort.
+      </p>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="flex flex-col items-center bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img src="feature2.png" alt="Prime Location" class="w-20 h-20 mb-4" />
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Prime IT Hub Location</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Strategically located in Sector 83A — adjoining IT City and Aerocity — with access to work and lifestyle.
+      </p>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="flex flex-col items-center bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img src="feature3.png" alt="On-Time Delivery" class="w-20 h-20 mb-4" />
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">On-Time Delivery</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Guaranteed possession timelines with no compromise on quality — your investment is in safe hands.
+      </p>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="flex flex-col items-center bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+      <img src="feature4.png" alt="High ROI" class="w-20 h-20 mb-4" />
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">High ROI Location</h3>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        With rapid development around Aerocity and IT City, Marbella Royce promises strong property appreciation.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+      <!-------------------------- Team Section --------------------------->
+    <section id="team" class="p-6 max-w-[1200px] mx-auto flex flex-col-reverse lg:flex-row items-center gap-12">
+  <!-- Left Image Panel -->
+  <div class="relative flex-1 w-full">
+    <div class="bg-[url('./images/aa.jpeg')] bg-cover bg-center h-[340px] lg:h-[500px] rounded-xl shadow-xl border-8 border-white flex items-end justify-center lg:justify-start lg:items-center">
+      <div class="absolute bottom-[-60px] lg:bottom-auto lg:right-[-60px] bg-white rounded-full shadow-lg p-2">
+        <img src="./images/marex.avif" alt="Team Member" class="h-[160px] w-[160px] object-cover rounded-full border-4 border-white" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Content Panel -->
+  <div class="flex flex-col gap-6 flex-1 text-center lg:text-left">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
+      Plan a Site Visit
+    </h2>
+    <p class="text-gray-600 text-lg leading-relaxed">
+      Our experienced team is ready to guide you through every step — from exploring the property to understanding the financials.
+    </p>
+
+    <!-- Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 mt-4 sm:justify-start justify-center items-center">
+      <a href="tel:+917009869291" class="bg-blue-600 hover:bg-blue-700 transition px-6 py-3 rounded-lg shadow-lg text-white font-semibold text-lg">
+        📞 Call: 7009869291
+      </a>
+      <a href="https://wa.me/917009869291?text=Hi%2C%20I'm%20interested%20in%20Marbella%20Royce%20project" target="_blank" class="bg-green-600 hover:bg-green-700 transition px-6 py-3 rounded-lg shadow-lg text-white font-semibold text-lg">
+        💬 WhatsApp Us
+      </a>
+    </div>
+  </div>
+</section>
+
+
+      <!---------------------- Story Section ------------------------------>
+         <section class="p-6 max-w-[1200px] mx-auto flex flex-col gap-8 md:flex-row-reverse items-center">
+  <img
+    src="./images/marbella-people.jpg"
+    alt="Our Story"
+    class="w-full max-w-[570px] rounded-lg shadow-lg border-8 border-white"
+  />
+  
+  <div class="flex flex-col gap-4 flex-1 text-center md:text-left">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 leading-tight">
+      Our Story – Who We Are
+    </h2>
+    <p class="text-gray-600 leading-relaxed text-base">
+      Marbella Group, a respected name in real estate, is launching Marbella Royce — a luxury high-rise apartment project in Sector 83A, Mohali. Located on a prominent 200 ft road and spread across 8.01 acres, this project is designed to set new benchmarks in urban living.
+      <br /><br />
+      Just minutes from IT City and Aerocity, Marbella Royce blends modern design, world-class amenities, and international-grade security for a premium lifestyle. From its architecture to its prime location, it offers unmatched value for both residents and investors.
+    </p>
+    <button class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg shadow-lg text-lg font-semibold w-fit">
+      See More
+    </button>
+  </div>
+</section>
+
+
+      <!-------------------------- Interior Wuality and craftmanship  Section -------------------------->
+    <!-- Interior Craftsmanship & Quality Section -->
+<section id="interior-quality" class="py-20 px-6 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <!-- Heading -->
+    <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-6">
+      Interior Craftsmanship & Quality
+    </h2>
+    <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-14">
+      Discover the essence of opulence at Marbella Royce. From Italian marble flooring to curated entertainment spaces, every detail is a testament to superior European luxury.
+    </p>
+
+    <!-- Grid Layout -->
+    <div class="grid gap-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      
+      <!-- Card 1 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/interior.webp" alt="Italian Marble Flooring" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">Italian Marble Flooring</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Statuario & Calacatta imported marble</li>
+          <li>Glossy, slip-resistant surface</li>
+          <li>Timeless elegance and durability</li>
+        </ul>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/indoor kids playb area.png" alt="Indoor Kids Play Area" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">Indoor Kids Play Area</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Soft-touch flooring and padded walls</li>
+          <li>Safe, colorful, and interactive design</li>
+          <li>Fully supervised & temperature-controlled</li>
+        </ul>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/bedroom.webp" alt="Lighting & Ceiling" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">Designer Lighting & Ceilings</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Imported chandeliers & mood lighting</li>
+          <li>Smart-controlled LED ambience</li>
+          <li>Elegant cove ceiling designs</li>
+        </ul>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/kitchen.jpg" alt="Modular Kitchen" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">European Modular Kitchen</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Quartz counters with Italian cabinetry</li>
+          <li>Fitted Bosch/Siemens appliances</li>
+          <li>Soft-close, matte-finish drawers</li>
+        </ul>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/lift_lobby.png" alt="Grand Lift Lobby" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">Grand Lift Lobby</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Double-height entry with designer lights</li>
+          <li>Italian tiles and statement elements</li>
+          <li>First impressions redefined</li>
+        </ul>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/karkeoke_room.png" alt="Karaoke Lounge" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">Karaoke Lounge</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Soundproofed with recliner seating</li>
+          <li>Premium acoustics & ambient lighting</li>
+          <li>Perfect for private soirées</li>
+        </ul>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/lounge_bar.png" alt="Lounge Bar" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">Private Lounge Bar</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Marble bar with ambient backlighting</li>
+          <li>Curated for intimate gatherings</li>
+          <li>Timeless design meets relaxed vibes</li>
+        </ul>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/Bolling_ally.png" alt="Boutique Bowling Alley" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">Boutique Bowling Alley</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Polished lanes with club-style lights</li>
+          <li>Leather lounge seating</li>
+          <li>A lifestyle statement, not just a game</li>
+        </ul>
+      </div>
+
+      <!-- Card 9 -->
+      <div class="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all group">
+        <img src="./images/exteriorinevening.png" alt="Sky-Piercing Tower" class="rounded-lg h-48 w-full object-cover mb-4 group-hover:scale-105 transition-transform duration-300" />
+        <h4 class="text-xl font-semibold text-gray-800 mb-2">42-Storey Architectural Marvel</h4>
+        <ul class="text-gray-600 text-sm list-disc list-inside space-y-1">
+          <li>Breathtaking views from every floor</li>
+          <li>Commanding skyline presence</li>
+          <li>India's most prestigious residential icon</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center mt-16">
+      <a href="https://wa.me/917009869291?text=I%20want%20to%20know%20more%20about%20the%20interior%20quality%20at%20Marbella%20Royce"
+         target="_blank"
+         class="inline-block bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-full shadow-xl text-lg font-semibold transition">
+        💬 Enquire Now via WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+      <!-----------------------------------Siteplan floorplans and Brochure--------------------------------->     
+
+<!-- Plans & Brochure Section -->
+<section class="px-5 py-16 bg-gray-100">
+  <div class="max-w-6xl mx-auto text-center mb-12">
+    <h2 class="text-3xl font-bold mb-2">Explore Our Plans & Brochure</h2>
+    <p class="text-gray-600">Browse the complete site layout, floor designs, and download the brochure for detailed specifications.</p>
+  </div>
+
+  <div class="grid gap-8 grid-cols-1 md:grid-cols-3 max-w-6xl mx-auto">
+    <!-- Site Plan Card -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+      <img src="./images/floorplans/floormap1.avif" alt="Site Plan" class="w-full h-64 object-cover">
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="text-xl font-semibold mb-3">Site Plan</h3>
+        <a href="./pdfs/siteplan.pdf" download class="inline-block bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition">Download PDF</a>
+      </div>
+    </div>
+
+    <!-- Floor Plans Card -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+      <img src="./images/floorplans/floormaps.avif" alt="Floor Plans" class="w-full h-64 object-cover">
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="text-xl font-semibold mb-3">Floor Plans</h3>
+        <a href="./pdfs/floorplans.pdf" download class="inline-block bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition">Download PDF</a>
+      </div>
+    </div>
+
+    <!-- Brochure Card -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300">
+      <img src="./images/pdf.logo.png" alt="Brochure Preview" class="w-full h-64 object-cover filter blur-sm">
+      <div class="p-5 flex flex-col items-center">
+        <h3 class="text-xl font-semibold mb-3">Project Brochure</h3>
+        <a href="./images/Marbella Royce Brochure .pdf" download class="inline-block bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition">Download PDF</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!---------------------------Gallery Section-------------------------------------->
+
+<section id="gallery" class="py-16 px-5 bg-white">
+  <div class="max-w-6xl mx-auto">
+    <!-- Heading -->
+    <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-6">
+      Project Gallery
+    </h2>
+    <p class="text-center text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-14">
+      Explore the stunning design, architecture, and luxury elements of Marbella Royce. These images capture the essence of premium living.
+    </p>
+
+    <!-- Responsive Gallery Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Image Item -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/interior.webp" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Interior View</span>
+        </div>
+      </div>
+
+      <!-- Repeat as needed -->
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/living.webp" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Living Room</span>
+        </div>
+      </div>
+
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/bedroom.webp" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Master Bedroom</span>
+        </div>
+      </div>
+
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/kitchen.jpg" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Modular Kitchen</span>
+        </div>
+      </div>
+
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/karkeoke_room.png" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Kareoke Room</span>
+        </div>
+      </div>
+      
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/lift_lobby.png" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Elevator Lobby</span>
+        </div>
+      </div>
+      
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/indoor kids playb area.png" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Kids Play Area</span>
+        </div>
+      </div>
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/Bolling_ally.png" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Bowlling Allyr</span>
+        </div>
+      </div>
+
+      <div class="group relative overflow-hidden rounded-xl shadow-lg">
+        <img src="./images/lobby.png" alt="Gallery Image" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500">
+        <div class="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+          <span class="text-white text-sm font-semibold">Exclusive Lobby/span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-14">
+      <a href="https://wa.me/917009869291?text=I%20want%20to%20book%20a%20site%20visit%20for%20Marbella%20Royce"
+         target="_blank"
+         class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full shadow-lg text-lg font-semibold transition">
+        📸 Book a Site Visit to See It Live
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+   <!-- =================== Footer Section =================== -->
+<footer id="footer" class="black-grad">
+  <div class="p-5 py-20 max-w-[1200px] text-white flex flex-col md:flex-row gap-[40px] md:gap-[140px] mx-auto">
+    <!-- Brand Info -->
+    <div class="flex flex-col gap-4 max-w-[550px]">
+      <h2 class="text-white text-2xl font-bold">Marbella Royce</h2>
+      <p class="text-white leading-relaxed">
+        Marbella Royce is a premier real estate developer bringing luxurious yet affordable residential and commercial properties to life. With over 25 years of excellence, we shape communities and redefine skylines.
+      </p>
+      <!-- Social Links -->
+      <div class="flex mt-4 gap-4 items-center">
+        <a href="https://twitter.com/" target="_blank">
+          <img src="twitter-logo.svg" alt="Twitter Logo" class="h-6 w-6" />
+        </a>
+        <a href="https://instagram.com/" target="_blank">
+          <img src="ig-logo.svg" alt="Instagram Logo" class="h-6 w-6" />
+        </a>
+        <a href="https://maps.google.com/" target="_blank">
+          <img src="google-logo.svg" alt="Google Logo" class="h-6 w-6" />
+        </a>
+        <a href="https://linkedin.com/" target="_blank">
+          <img src="linkedin-logo.svg" alt="Linkedin Logo" class="h-6 w-6" />
+        </a>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="flex gap-10">
+      <!-- Company -->
+      <div class="flex flex-col min-w-[140px]">
+        <h4 class="font-semibold text-lg mb-6">Company</h4>
+        <a href="#about" class="hover:text-gray-300 transition-all mb-3">About Us</a>
+        <a href="#how-it-works" class="hover:text-gray-300 transition-all mb-3">How It Works</a>
+        <a href="#terms" class="hover:text-gray-300 transition-all mb-3">Terms & Conditions</a>
+        <a href="#privacy" class="hover:text-gray-300 transition-all mb-3">Privacy Policy</a>
+      </div>
+
+      <!-- Resources -->
+      <div class="flex flex-col min-w-[140px]">
+        <h4 class="font-semibold text-lg mb-6">Resources</h4>
+        <a href="/docs/brochure.pdf" target="_blank" class="hover:text-gray-300 transition-all mb-3">Brochure</a>
+        <a href="#projects" class="hover:text-gray-300 transition-all mb-3">Our Projects</a>
+        <a href="#contact" class="hover:text-gray-300 transition-all mb-3">Contact Us</a>
+        <a href="#faq" class="hover:text-gray-300 transition-all mb-3">FAQs</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom line -->
+  <div class="text-center text-gray-400 text-sm border-t border-gray-600 py-4">
+    &copy; 2025 Marbella Royce. All rights reserved.
+  </div>
+</footer>
+
+    <!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+body
+<script>
+  const swiper = new Swiper(".swiper", {
+    loop: true,
+    autoplay: {
+      delay: 5000,
+      disableOnInteraction: false,
+    },
+    effect: "fade",
+  });
+</script>
+<script>
+  const btn = document.getElementById('hamburger-button');
+  const menu = document.getElementById('mobile-menu');
+
+  btn.addEventListener('click', () => {
+    menu.classList.toggle('hidden');
+  });
+</script>
+
+
+  </body>
+</html>
